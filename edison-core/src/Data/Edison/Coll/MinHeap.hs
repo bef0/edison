@@ -201,7 +201,7 @@ lookup _ _ = error "MinHeap.lookup: empty heap"
 lookupM x (M y ys)
   | x > y  = C.lookupM x ys
   | x == y = return y
-lookupM _ _ = fail "lookupM.lookup: XXX"
+lookupM _ _ = error "lookupM.lookup: XXX"
 
 lookupAll x (M y ys)
   | x > y  = C.lookupAll x ys
@@ -286,13 +286,13 @@ partitionLT_GT x (M y ys)
 partitionLT_GT _ h = (E, h)
 
 
-minView E = fail "MinHeap.minView: empty heap"
+minView E = error "MinHeap.minView: empty heap"
 minView (M x xs) = return (x, fromPrim xs)
 
 minElem E = error "MinHeap.minElem: empty heap"
 minElem (M x _) = x
 
-maxView E = fail "MinHeap.maxView: empty heap"
+maxView E = error "MinHeap.maxView: empty heap"
 maxView (M x xs) = case C.maxView xs of
                      Nothing     -> return (x, E)
                      Just (y,ys) -> return (y, M x ys)

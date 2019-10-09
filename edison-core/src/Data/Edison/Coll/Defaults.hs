@@ -89,7 +89,7 @@ intersectWitnessUsingToOrdList as bs = witness (toOrdList as) (toOrdList bs)
             EQ -> return (x, y)
             GT -> witness a ys
         -- XXX
-        witness _ _ = fail $ instanceName as ++ ".intersect: failed"
+        witness _ _ = error $ instanceName as ++ ".intersect: errored"
 
 lookupUsingLookupM :: Coll c a => a -> c -> a
 lookupUsingLookupM x ys = runIdentity (lookupM x ys)
@@ -98,13 +98,13 @@ lookupUsingLookupAll :: Coll c a => a -> c -> a
 lookupUsingLookupAll x ys =
   case lookupAll x ys of
     (y:_) -> y
-    [] -> error $ instanceName ys ++ ".lookup: lookup failed"
+    [] -> error $ instanceName ys ++ ".lookup: lookup errored"
 
 lookupMUsingLookupAll :: (Coll c a, Monad m) => a -> c -> m a
 lookupMUsingLookupAll x ys =
   case lookupAll x ys of
     (y:_) -> return y
-    []    -> fail $ instanceName ys ++ ".lookupM: lookup failed"
+    []    -> error $ instanceName ys ++ ".lookupM: lookup errored"
 
 lookupWithDefaultUsingLookupAll :: Coll c a => a -> a -> c -> a
 lookupWithDefaultUsingLookupAll dflt x ys =

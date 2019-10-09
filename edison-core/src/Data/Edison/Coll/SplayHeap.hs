@@ -182,7 +182,7 @@ lookup x (T a y b)
   | x > y     = lookup x b
   | otherwise = y
 
-lookupM _ E = fail "SplayHeap.lookup: empty heap"
+lookupM _ E = error "SplayHeap.lookup: empty heap"
 lookupM x (T a y b)
   | x < y     = lookupM x a
   | x > y     = lookupM x b
@@ -354,7 +354,7 @@ partitionLT_GT k t@(T a x b) =
         else (T a x (filterLT k ba), filterGT k bb)
   else (filterLT k a, filterGT k b)
 
-minView E = fail "SplayHeap.minView: empty heap"
+minView E = error "SplayHeap.minView: empty heap"
 minView (T a x b) = return (y, ys)
   where (y,ys) = minv a x b
         minv E x b = (x,b)
@@ -368,7 +368,7 @@ minElem (T a x _) = minel a x
         minel (T a x _) _ = minel a x
 
 
-maxView E = fail "SplayHeap.maxView: empty heap"
+maxView E = error "SplayHeap.maxView: empty heap"
 maxView (T a x b) = return (y,ys)
   where (ys,y) = maxv a x b
         maxv a x E = (a,x)

@@ -206,7 +206,7 @@ class (Eq k,Functor m) => AssocX m k | m -> k where
   --   more than once in the finite relation.  Otherwise, it is /unambiguous/.
   lookup         :: k -> m a -> a
 
-  -- | Find the element associated with the given key.  Calls 'fail' if the
+  -- | Find the element associated with the given key.  Calls 'error' if the
   --   given key is not bound.  If more than one element is bound by the given
   --   key, it is unspecified which is returned.
   --
@@ -230,7 +230,7 @@ class (Eq k,Functor m) => AssocX m k | m -> k where
   lookupAndDelete :: k -> m a -> (a, m a)
 
   -- | Find the element associated with the given key; return the element
-  --   and the collection with that element deleted.  Calls @fail@ if
+  --   and the collection with that element deleted.  Calls @error@ if
   --   the given key is not bound.  If more than one element is bound by the
   --   given key, it is unspecified which is deleted and returned.
   --
@@ -389,7 +389,7 @@ class (Eq k,Functor m) => AssocX m k | m -> k where
 --   relation.
 class (AssocX m k, Ord k) => OrdAssocX m k | m -> k where
   -- | Remove the binding with the minimum key, and return its element together
-  --   with the remaining associative collection.  Calls 'fail' if the
+  --   with the remaining associative collection.  Calls 'error' if the
   --   associative collection is empty.  Which binding is removed if there
   --   is more than one minimum is unspecified.
   --
@@ -420,7 +420,7 @@ class (AssocX m k, Ord k) => OrdAssocX m k | m -> k where
   unsafeInsertMin    :: k -> a -> m a -> m a
 
   -- | Remove the binding with the maximum key, and return its element together
-  --   with the remaining associative collection.  Calls 'fail' if the
+  --   with the remaining associative collection.  Calls 'error' if the
   --   associative collection is empty.  Which binding is removed if there
   --   is more than one maximum is unspecified.
   --
@@ -769,7 +769,7 @@ class AssocX m k => Assoc m k | m -> k where
 class (Assoc m k, OrdAssocX m k) => OrdAssoc m k | m -> k where
   -- | Delete the binding with the minimum key from an associative
   --   collection and return the key, the element and the remaining
-  --   associative collection.  Calls 'fail' if the associative collection
+  --   associative collection.  Calls 'error' if the associative collection
   --   is empty.  Which binding is chosen if there are multiple minimum keys
   --   is unspecified.
   --
@@ -792,7 +792,7 @@ class (Assoc m k, OrdAssocX m k) => OrdAssoc m k | m -> k where
 
   -- | Delete the binding with the maximum key from an associative
   --   collection and return the key, the element and the remaining
-  --   associative collection.  Calls 'fail' if the associative collection
+  --   associative collection.  Calls 'error' if the associative collection
   --   is empty.  Which binding is chosen if there are multiple maximum keys
   --   is unspecified.
   --

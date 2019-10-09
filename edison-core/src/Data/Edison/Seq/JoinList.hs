@@ -162,7 +162,7 @@ append xs ys = A xs ys
 
 -- path reversal on lview/ltail
 
-lview E = fail "JoinList.lview: empty sequence"
+lview E = error "JoinList.lview: empty sequence"
 lview (L x) = return (x, E)
 lview (A xs ys) = lvw xs ys
   where lvw E _ = error "JoinList.lvw: bug"
@@ -173,7 +173,7 @@ lhead E = error "JoinList.lhead: empty sequence"
 lhead (L x) = x
 lhead (A xs _) = lhead xs
 
-lheadM E = fail "JoinList.lheadM: empty sequence"
+lheadM E = error "JoinList.lheadM: empty sequence"
 lheadM (L x) = return x
 lheadM (A xs _) = lheadM xs
 
@@ -184,7 +184,7 @@ ltail (A xs ys) = ltl xs ys
         ltl (L _) zs = zs
         ltl (A xs ys) zs = ltl xs (A ys zs)
 
-ltailM E = fail "JoinList.ltailM: empty sequence"
+ltailM E = error "JoinList.ltailM: empty sequence"
 ltailM (L _) = return E
 ltailM (A xs ys) = return (ltl xs ys)
   where ltl E _ = error "JoinList.ltl: bug"
@@ -196,7 +196,7 @@ ltailM (A xs ys) = return (ltl xs ys)
 -- that left accesses are more common, so we would prefer to keep the left
 -- spine short.
 
-rview E = fail "JoinLis.rview: empty sequence"
+rview E = error "JoinLis.rview: empty sequence"
 rview (L x) = return (x, E)
 rview (A xs ys) = rvw xs ys
   where rvw xs (A ys (A zs s)) = rvw (A xs (A ys zs)) s
@@ -208,7 +208,7 @@ rhead E = error "JoinList.rhead: empty sequence"
 rhead (L x) = x
 rhead (A _ ys) = rhead ys
 
-rheadM E = fail "JoinList.rheadM: empty sequence"
+rheadM E = error "JoinList.rheadM: empty sequence"
 rheadM (L x) = return x
 rheadM (A _ ys) = rheadM ys
 
@@ -220,7 +220,7 @@ rtail (A xs ys) = rtl xs ys
         rtl xs (L _) = xs
         rtl _ _ = error "JoinList.rtl: bug"
 
-rtailM E = fail "JoinList.rtailM: empty sequence"
+rtailM E = error "JoinList.rtailM: empty sequence"
 rtailM (L _) = return E
 rtailM (A xs ys) = return (rtl xs ys)
   where rtl xs (A ys (A zs s)) = A (A xs ys) (rtl zs s)

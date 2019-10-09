@@ -159,14 +159,14 @@ rcons y (Q xs ys) = Q xs (y:ys)
 append (Q xs1 ys1) (Q xs2 ys2) =
     Q (xs1 ++ L.reverseOnto ys1 xs2) ys2
 
-lview (Q [] _) = fail "SimpleQueue.lview: empty sequence"
+lview (Q [] _) = error "SimpleQueue.lview: empty sequence"
 lview (Q [x] ys) = return (x, Q (L.reverse ys) [])
 lview (Q (x:xs) ys) = return (x, Q xs ys)
 
 lhead (Q [] _) = error "SimpleQueue.lhead: empty sequence"
 lhead (Q (x:_) _) = x
 
-lheadM (Q [] _) = fail "SimpleQueue.lheadM: empty sequence"
+lheadM (Q [] _) = error "SimpleQueue.lheadM: empty sequence"
 lheadM (Q (x:_) _) = return x
 
 ltail (Q [_] ys) = Q (L.reverse ys) []
@@ -175,12 +175,12 @@ ltail (Q [] _) = error "SimpleQueue.ltail: empty sequence"
 
 ltailM (Q [_] ys) = return (Q (L.reverse ys) [])
 ltailM (Q (_:xs) ys) = return (Q xs ys)
-ltailM (Q [] _) = fail "SimpleQueue.ltailM: empty sequence"
+ltailM (Q [] _) = error "SimpleQueue.ltailM: empty sequence"
 
 rview (Q xs (y:ys)) = return (y, Q xs ys)
 rview (Q xs []) =
   case L.rview xs of
-    Nothing      -> fail "SimpleQueue.rview: empty sequence"
+    Nothing      -> error "SimpleQueue.rview: empty sequence"
     Just (x,xs') -> return (x, Q xs' [])
 
 rhead (Q _ (y:_)) = y
@@ -188,7 +188,7 @@ rhead (Q [] []) = error "SimpleQueue.rhead: empty sequence"
 rhead (Q xs []) = L.rhead xs
 
 rheadM (Q _ (y:_)) = return y
-rheadM (Q [] []) = fail "SimpleQueue.rheadM: empty sequence"
+rheadM (Q [] []) = error "SimpleQueue.rheadM: empty sequence"
 rheadM (Q xs []) = return (L.rhead xs)
 
 rtail (Q xs (_:ys)) = Q xs ys
@@ -196,7 +196,7 @@ rtail (Q [] []) = error "SimpleQueue.rtail: empty sequence"
 rtail (Q xs []) = Q (L.rtail xs) []
 
 rtailM (Q xs (_:ys)) = return (Q xs ys)
-rtailM (Q [] []) = fail "SimpleQueue.rtailM: empty sequence"
+rtailM (Q [] []) = error "SimpleQueue.rtailM: empty sequence"
 rtailM (Q xs []) = return (Q (L.rtail xs) [])
 
 null (Q [] _) = True

@@ -156,7 +156,7 @@ rcons x (N n xs) = N (n+1) (S.rcons x xs)
 append (N m xs) (N n ys) = N (m+n) (S.append xs ys)
 
 lview (N n xs) = case S.lview xs of
-                   Nothing     -> fail "SizedSeq.lview: empty sequence"
+                   Nothing     -> error "SizedSeq.lview: empty sequence"
                    Just (x,xs) -> return (x, N (n-1) xs)
 
 lhead (N _ xs) = S.lhead xs
@@ -166,11 +166,11 @@ lheadM (N _ xs) = S.lheadM xs
 ltail (N 0 _) = error "SizedSeq.ltail: empty sequence"
 ltail (N n xs) = N (n-1) (S.ltail xs)
 
-ltailM (N 0 _) = fail "SizedSeq.ltailM: empty sequence"
+ltailM (N 0 _) = error "SizedSeq.ltailM: empty sequence"
 ltailM (N n xs) = return (N (n-1) (S.ltail xs))
 
 rview (N n xs) = case S.rview xs of
-                   Nothing     -> fail "SizedSeq.rview: empty sequence"
+                   Nothing     -> error "SizedSeq.rview: empty sequence"
                    Just (x,xs) -> return (x, N (n-1) xs)
 
 rhead (N _ xs) = S.rhead xs
@@ -180,7 +180,7 @@ rheadM (N _ xs) = S.rheadM xs
 rtail (N 0 _) = error "SizedSeq.rtail: empty sequence"
 rtail (N n xs) = N (n-1) (S.rtail xs)
 
-rtailM (N 0 _) = fail "SizedSeq.rtailM: empty sequence"
+rtailM (N 0 _) = error "SizedSeq.rtailM: empty sequence"
 rtailM (N n xs) = return (N (n-1) (S.rtail xs))
 
 null (N n _) = n == 0

@@ -193,7 +193,7 @@ append xs ys = app (size xs) xs ys
         app _ _ _ = error "BraunSeq.append: bug!"
   -- how does it compare to converting to/from lists?
 
-lview E = fail "BraunSeq.lview: empty sequence"
+lview E = error "BraunSeq.lview: empty sequence"
 lview (B x a b) = return (x, combine a b)
 
 -- not exported
@@ -204,13 +204,13 @@ combine (B x a b) c = B x c (combine a b)
 lhead E = error "BraunSeq.lhead: empty sequence"
 lhead (B x _ _) = x
 
-lheadM E = fail "BraunSeq.lheadM: empty sequence"
+lheadM E = error "BraunSeq.lheadM: empty sequence"
 lheadM (B x _ _) = return x
 
 ltail E = error "BraunSeq.ltail: empty sequence"
 ltail (B _ a b) = combine a b
 
-ltailM E = fail "BraunSeq.ltailM: empty sequence"
+ltailM E = error "BraunSeq.ltailM: empty sequence"
 ltailM (B _ a b) = return (combine a b)
 
 -- not exported
@@ -222,20 +222,20 @@ delAt i (B x a b)
   | otherwise = B x a (delAt (half i - 1) b)
 delAt _ _ = error "BraunSeq.delAt: bug.  Impossible case!"
 
-rview E = fail "BraunSeq.rview: empty sequence"
+rview E = error "BraunSeq.rview: empty sequence"
 rview xs = return (lookup m xs, delAt m xs)
   where m = size xs - 1
 
 rhead E = error "BraunSeq.rhead: empty sequence"
 rhead xs = lookup (size xs - 1) xs
 
-rheadM E = fail  "BraunSeq.rheadM: empty sequence"
+rheadM E = error  "BraunSeq.rheadM: empty sequence"
 rheadM xs = return (lookup (size xs - 1) xs)
 
 rtail E = error "BraunSeq.rtail: empty sequence"
 rtail xs = delAt (size xs - 1) xs
 
-rtailM E = fail "BraunSeq.rtailM: empty sequence"
+rtailM E = error "BraunSeq.rtailM: empty sequence"
 rtailM xs = return (delAt (size xs - 1) xs)
 
 null E = True
@@ -347,14 +347,14 @@ inBounds i xs = (i >= 0) && inb xs i
 lookup i xs = runIdentity (lookupM i xs)
 
 lookupM i xs
-  | i < 0     = fail "BraunSeq.lookupM: bad subscript"
+  | i < 0     = error "BraunSeq.lookupM: bad subscript"
   | otherwise = look xs i
   where look E _ = nothing
         look (B x a b) i
           | odd i     = look a (half i)
           | i == 0    = return x
           | otherwise = look b (half i - 1)
-        nothing = fail "BraunSeq.lookupM: not found"
+        nothing = error "BraunSeq.lookupM: not found"
 
 lookupWithDefault d i xs = if i < 0 then d
                            else look xs i
@@ -455,8 +455,8 @@ structuralInvariant (B _ l r) = isJust (check l r)
            y <- check r1 r2
            if (x == y) || (x == y + 1)
               then return (x+y+1)
-              else fail "unbalanced tree"
-        check _ _ = fail "unbalanced tree"
+              else error "unbalanced tree"
+        check _ _ = error "unbalanced tree"
 
 
 -- the remaining functions all use defaults

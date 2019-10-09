@@ -187,13 +187,13 @@ sameMapByUsingSubmapBy f m1 m2 = size m1 == size m2 && submapBy f m1 m2
 lookupAndDeleteDefault :: AssocX m k => k -> m a -> (a, m a)
 lookupAndDeleteDefault k m =
   case lookupM k m of
-     Nothing -> error (instanceName m ++ ".lookupAndDelete: lookup failed")
+     Nothing -> error (instanceName m ++ ".lookupAndDelete: lookup errored")
      Just x  -> (x, delete k m)
 
 lookupAndDeleteMDefault :: (Monad rm, AssocX m k) => k -> m a -> rm (a, m a)
 lookupAndDeleteMDefault k m =
   case lookupM k m of
-     Nothing -> fail (instanceName m ++ ".lookupAndDelete: lookup failed")
+     Nothing -> error (instanceName m ++ ".lookupAndDelete: lookup errored")
      Just x  -> return (x, delete k m)
 
 lookupAndDeleteAllDefault :: (S.Sequence seq, AssocX m k) => k -> m a -> (seq a,m a)

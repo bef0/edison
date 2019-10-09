@@ -161,25 +161,25 @@ rcons y (Q i xs ys j) = makeQ i xs (y:ys) (j+1)
 append (Q i1 xs1 ys1 j1) (Q i2 xs2 ys2 j2) =
     Q (i1 + j1 + i2) (xs1 ++ L.reverseOnto ys1 xs2) ys2 j2
 
-lview (Q _ [] _ _) = fail "BankersQueue.lview: empty sequence"
+lview (Q _ [] _ _) = error "BankersQueue.lview: empty sequence"
 lview (Q i (x:xs) ys j) = return (x, makeQ (i-1) xs ys j)
 
 lhead (Q _ [] _ _) = error "BankersQueue.lhead: empty sequence"
 lhead (Q _ (x:_) _ _) = x
 
-lheadM (Q _ [] _ _) = fail "BankersQueue.lheadM: empty sequence"
+lheadM (Q _ [] _ _) = error "BankersQueue.lheadM: empty sequence"
 lheadM (Q _ (x:_) _ _) = return x
 
 ltail (Q i (_:xs) ys j) = makeQ (i-1) xs ys j
 ltail _ = error "BankersQueue.ltail: empty sequence"
 
 ltailM (Q i (_:xs) ys j) = return (makeQ (i-1) xs ys j)
-ltailM _ = fail "BankersQueue.ltail: empty sequence"
+ltailM _ = error "BankersQueue.ltail: empty sequence"
 
 rview (Q i xs (y:ys) j) = return (y, Q i xs ys (j-1))
 rview (Q i xs [] _) =
   case L.rview xs of
-    Nothing      -> fail "BankersQueue.rview: empty sequence"
+    Nothing      -> error "BankersQueue.rview: empty sequence"
     Just (x,xs') -> return (x, Q (i-1) xs' [] 0)
 
 rhead (Q _ _ (y:_) _) = y
@@ -187,7 +187,7 @@ rhead (Q _ [] [] _) = error "BankersQueue.rhead: empty sequence"
 rhead (Q _ xs [] _) = L.rhead xs
 
 rheadM (Q _ _ (y:_) _) = return y
-rheadM (Q _ [] [] _) = fail "BankersQueue.rheadM: empty sequence"
+rheadM (Q _ [] [] _) = error "BankersQueue.rheadM: empty sequence"
 rheadM (Q _ xs [] _) = return (L.rhead xs)
 
 rtail (Q i xs (_:ys) j) = Q i xs ys (j-1)
@@ -195,7 +195,7 @@ rtail (Q _ [] [] _) = error "BankersQueue.rtail: empty sequence"
 rtail (Q i xs [] _) = Q (i-1) (L.rtail xs) [] 0
 
 rtailM (Q i xs (_:ys) j) = return (Q i xs ys (j-1))
-rtailM (Q _ [] [] _) = fail "BankersQueue.rtailM: empty sequence"
+rtailM (Q _ [] [] _) = error "BankersQueue.rtailM: empty sequence"
 rtailM (Q i xs [] _) = return (Q (i-1) (L.rtail xs) [] 0)
 
 null (Q i _ _ _) = (i == 0)

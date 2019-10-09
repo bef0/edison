@@ -198,8 +198,8 @@ null               = DM.null
 size               = DM.size
 member             = DM.member
 count              = countUsingMember
-lookup k m         = maybe (error (moduleName ++ ".lookup: failed")) id (DM.lookup k m)
-lookupM k m        = maybe (fail (moduleName ++ ".lookupM: failed")) return (DM.lookup k m)
+lookup k m         = maybe (error (moduleName ++ ".lookup: errored")) id (DM.lookup k m)
+lookupM k m        = maybe (error (moduleName ++ ".lookupM: errored")) return (DM.lookup k m)
 lookupAll          = lookupAllUsingLookupM
 lookupWithDefault  = DM.findWithDefault
 lookupAndDelete    = lookupAndDeleteDefault
@@ -223,14 +223,14 @@ partition          = DM.partition
 elements           = elementsUsingFold
 
 minView m          = if DM.null m
-                       then fail (moduleName ++ ".minView: failed")
+                       then error (moduleName ++ ".minView: errored")
                        else let ((_,x),m') = DM.deleteFindMin m
                             in return (x,m')
 minElem            = snd . DM.findMin
 deleteMin          = DM.deleteMin
 unsafeInsertMin    = DM.insert
 maxView m          = if DM.null m
-                       then fail (moduleName ++ ".maxView: failed")
+                       then error (moduleName ++ ".maxView: errored")
                        else let ((_,x),m') = DM.deleteFindMax m
                             in return (x,m')
 maxElem            = snd . DM.findMax
@@ -283,11 +283,11 @@ filterWithKey      = DM.filterWithKey
 partitionWithKey   = DM.partitionWithKey
 
 minViewWithKey m   = if DM.null m
-                        then fail (moduleName ++ ".minViewWithKey: failed")
+                        then error (moduleName ++ ".minViewWithKey: errored")
                         else return (DM.deleteFindMin m)
 minElemWithKey     = DM.findMin
 maxViewWithKey m   = if DM.null m
-                        then fail (moduleName ++ ".maxViewWithKey: failed")
+                        then error (moduleName ++ ".maxViewWithKey: errored")
                         else return (DM.deleteFindMax m)
 maxElemWithKey     = DM.findMax
 foldrWithKey        = DM.foldrWithKey

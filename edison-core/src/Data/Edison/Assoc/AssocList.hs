@@ -311,7 +311,7 @@ count key (I k _ m) | key == k  = 1
 
 lookup key m = runIdentity (lookupM key m)
 
-lookupM _ E = fail "AssocList.lookup: lookup failed"
+lookupM _ E = error "AssocList.lookup: lookup errored"
 lookupM key (I k x m) | key == k  = return x
                       | otherwise = lookupM key m
 
@@ -321,7 +321,7 @@ lookupAll key (I k x m) | key == k  = S.singleton x
 
 lookupAndDelete key m = runIdentity (lookupAndDeleteM key m)
 
-lookupAndDeleteM _ E = fail "AssocList.lookupAndDeleteM: lookup failed"
+lookupAndDeleteM _ E = error "AssocList.lookupAndDeleteM: lookup errored"
 lookupAndDeleteM key (I k x m)
    | key == k  = return (x,delete k m)
    | otherwise = lookupAndDeleteM key m >>=
@@ -424,7 +424,7 @@ findMax k0 a0 (I k a m)
         | k > k0    = findMax k  a  (delete k m)
         | otherwise = findMax k0 a0 (delete k m)
 
-minView E = fail (moduleName++".minView: empty map")
+minView E = error (moduleName++".minView: empty map")
 minView n@(I k a m) = let (k',x) = findMin k a m in return (x,delete k' n)
 
 minElem E = error (moduleName++".minElem: empty map")
@@ -435,7 +435,7 @@ deleteMin n@(I k a m) = let (k',_) = findMin k a m in delete k' n
 
 unsafeInsertMin  = insert
 
-maxView E = fail (moduleName++".maxView: empty map")
+maxView E = error (moduleName++".maxView: empty map")
 maxView n@(I k a m) = let (k',x) = findMax k a m in return (x,delete k' n)
 
 maxElem E = error (moduleName++".maxElem: empty map")
@@ -482,13 +482,13 @@ partitionLT_GE k   = spanFM (<k)  . mergeSortFM
 partitionLE_GT k   = spanFM (<=k) . mergeSortFM
 partitionLT_GT k   = (\(x,y) -> (x,delete k y)) . spanFM (<k)  . mergeSortFM
 
-minViewWithKey E   = fail $ moduleName++".minViewWithKey: empty map"
+minViewWithKey E   = error $ moduleName++".minViewWithKey: empty map"
 minViewWithKey n@(I k a m) = let (k',x) = findMin k a m in return ((k',x),delete k' n)
 
 minElemWithKey E   = error $ moduleName++".minElemWithKey: empty map"
 minElemWithKey (I k a m) = findMin k a m
 
-maxViewWithKey E   = fail $ moduleName++".maxViewWithKey: empty map"
+maxViewWithKey E   = error $ moduleName++".maxViewWithKey: empty map"
 maxViewWithKey n@(I k a m) = let (k',x) = findMax k a m in return ((k',x),delete k' n)
 
 maxElemWithKey E   = error $ moduleName++".maxElemWithKey: empty map"

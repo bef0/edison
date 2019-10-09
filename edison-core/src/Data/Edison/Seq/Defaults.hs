@@ -35,7 +35,7 @@ appendUsingFoldr s t | null t = s
 
 rviewDefault :: (Monad m, Sequence s) => s a -> m (a, s a)
 rviewDefault xs
-  | null xs   = fail $ instanceName xs ++ ".rview: empty sequence"
+  | null xs   = error $ instanceName xs ++ ".rview: empty sequence"
   | otherwise = return (rhead xs, rtail xs)
 
 
@@ -52,7 +52,7 @@ rtailUsingLview xs =
 rtailMUsingLview :: (Monad m,Sequence s) => s a -> m (s a)
 rtailMUsingLview xs =
     case lview xs of
-      Nothing      -> fail $ instanceName xs ++ ".rtailM: empty sequence"
+      Nothing      -> error $ instanceName xs ++ ".rtailM: empty sequence"
       Just (x, xs) -> return (rt x xs)
   where rt x xs =
           case lview xs of
@@ -223,7 +223,7 @@ lookupWithDefaultUsingDrop d i s
 lookupMUsingDrop :: (Monad m, Sequence s) => Int -> s a -> m a
 lookupMUsingDrop i s
   -- XXX better error message!
-  | i < 0 || null s' = fail $ instanceName s
+  | i < 0 || null s' = error $ instanceName s
                         ++ ".lookupMUsingDrop: empty sequence"
   | otherwise        = return (lhead s')
   where s' = drop i s

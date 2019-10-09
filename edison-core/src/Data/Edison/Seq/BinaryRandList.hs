@@ -181,7 +181,7 @@ copy n x
           | n == 0 = E
           | otherwise = Even (cp (half n) (x,x))
 
-lview E = fail "BinaryRandList.lview: empty sequence"
+lview E = error "BinaryRandList.lview: empty sequence"
 lview (Even ps) = case lview ps of
                     Just ((x,y), ps') -> return (x, Odd y ps')
                     Nothing -> error "BinaryRandList.lview: bug!"
@@ -191,7 +191,7 @@ lhead E = error "BinaryRandList.lhead: empty sequence"
 lhead (Even ps) = fst (lhead ps)
 lhead (Odd x _) = x
 
-lheadM E = fail "BinaryRandList.lheadM: empty sequence"
+lheadM E = error "BinaryRandList.lheadM: empty sequence"
 lheadM (Even ps) = return (fst (lhead ps))
 lheadM (Odd x _) = return (x)
 
@@ -201,7 +201,7 @@ ltail (Even ps) = case lview ps of
                     Nothing -> error "BinaryRandList.ltail: bug!"
 ltail (Odd _ ps) = mkEven ps
 
-ltailM E = fail "BinaryRandList.ltailM: empty sequence"
+ltailM E = error "BinaryRandList.ltailM: empty sequence"
 ltailM (Even ps) = case lview ps of
                       Just ((_,y), ps') -> return (Odd y ps')
                       Nothing -> error "BinaryRandList.ltailM: bug!"
@@ -212,7 +212,7 @@ rhead (Even ps) = snd (rhead ps)
 rhead (Odd x E) = x
 rhead (Odd _ ps) = snd (rhead ps)
 
-rheadM E = fail "BinaryRandList.rheadM: empty sequence"
+rheadM E = error "BinaryRandList.rheadM: empty sequence"
 rheadM (Even ps) = return (snd (rhead ps))
 rheadM (Odd x E) = return x
 rheadM (Odd _ ps) = return (snd (rhead ps))
@@ -270,10 +270,10 @@ inBounds i xs = (i >= 0) && inb xs i
 lookup i xs = runIdentity (lookupM i xs)
 
 lookupM i xs
-    | i < 0     = fail "BinaryRandList.lookup: bad subscript"
+    | i < 0     = error "BinaryRandList.lookup: bad subscript"
     | otherwise = lookFun nothing xs i return
     where
-        nothing = fail "BinaryRandList.lookup: not found"
+        nothing = error "BinaryRandList.lookup: not found"
 
 lookupWithDefault d i xs
     | i < 0 = d

@@ -210,11 +210,11 @@ class (Functor s, MonadPlus s) => Sequence s where
   copy      :: Int -> a -> s a
 
   -- | Separate a sequence into its first (leftmost) element and the
-  --   remaining sequence.  Calls 'fail' if the sequence is empty.
+  --   remaining sequence.  Calls 'error' if the sequence is empty.
   --
   -- /Axioms:/
   --
-  -- * @lview empty = fail@
+  -- * @lview empty = error@
   --
   -- * @lview (lcons x xs) = return (x,xs)@
   --
@@ -238,11 +238,11 @@ class (Functor s, MonadPlus s) => Sequence s where
   lhead     :: s a -> a
 
   -- | Returns the first element of a sequence. 
-  --   Calls 'fail' if the sequence is empty.
+  --   Calls 'error' if the sequence is empty.
   --
   -- /Axioms:/
   --
-  -- * @lheadM empty = fail@
+  -- * @lheadM empty = error@
   --
   -- * @lheadM (lcons x xs) = return x@
   --
@@ -266,11 +266,11 @@ class (Functor s, MonadPlus s) => Sequence s where
   ltail     :: s a -> s a
 
   -- | Delete the first element of the sequence.
-  --   Calls 'fail' if the sequence is empty.
+  --   Calls 'error' if the sequence is empty.
   --
   -- /Axioms:/
   --
-  -- * @ltailM empty = fail@
+  -- * @ltailM empty = error@
   --
   -- * @ltailM (lcons x xs) = return xs@
   --
@@ -280,11 +280,11 @@ class (Functor s, MonadPlus s) => Sequence s where
   ltailM    :: (Monad m) => s a -> m (s a)
 
   -- | Separate a sequence into its last (rightmost) element and the
-  --   remaining sequence.  Calls 'fail' if the sequence is empty.
+  --   remaining sequence.  Calls 'error' if the sequence is empty.
   --
   -- /Axioms:/
   --
-  -- * @rview empty = fail@
+  -- * @rview empty = error@
   --
   -- * @rview (rcons x xs) = return (x,xs)@
   --
@@ -308,11 +308,11 @@ class (Functor s, MonadPlus s) => Sequence s where
   rhead     :: s a -> a 
 
   -- | Returns the last element of the sequence.
-  --    Calls 'fail' if the sequence is empty.
+  --    Calls 'error' if the sequence is empty.
   --
   -- /Axioms:/
   --
-  -- * @rheadM empty = fail@
+  -- * @rheadM empty = error@
   --
   -- * @rheadM (rcons x xs) = return x@
   --
@@ -336,11 +336,11 @@ class (Functor s, MonadPlus s) => Sequence s where
   rtail     :: s a -> s a
 
   -- | Delete the last (rightmost) element of the sequence.
-  --   Calls 'fail' of the sequence is empty
+  --   Calls 'error' of the sequence is empty
   --
   -- /Axioms:/
   --
-  -- * @rtailM empty = fail@
+  -- * @rtailM empty = error@
   --
   -- * @rtailM (rcons x xs) = return xs@
   --
@@ -933,7 +933,7 @@ class (Functor s, MonadPlus s) => Sequence s where
   lookup    :: Int -> s a -> a
 
   -- | Return the element at the given index.  All indexes are 0 based.
-  --   Calls 'fail' if the index is out of bounds.
+  --   Calls 'error' if the index is out of bounds.
   --
   -- > lookupM i xs@<x0,...,xn-1>
   -- >   | inBounds i xs = Just xi
@@ -941,7 +941,7 @@ class (Functor s, MonadPlus s) => Sequence s where
   --
   -- /Axioms:/
   --
-  -- * @not (inBounds i xs) ==> lookupM i xs = fail@
+  -- * @not (inBounds i xs) ==> lookupM i xs = error@
   --
   -- * @size xs == i ==> lookupM i (append xs (lcons x ys)) = return x@
   --

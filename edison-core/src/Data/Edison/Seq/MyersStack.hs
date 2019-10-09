@@ -151,22 +151,22 @@ lcons x xs@(C i _  _  (C j _ _ xs'))
     | i == j = C (1 + i + j) x xs xs'
 lcons x xs = C 1 x xs xs
 
-lview E = fail "MyersStack.lview: empty sequence"
+lview E = error "MyersStack.lview: empty sequence"
 lview (C _ x xs _) = return (x, xs)
 
 lhead E = error "MyersStack.lhead: empty sequence"
 lhead (C _ x _ _) = x
 
-lheadM E = fail "MyersStack.lheadM: empty sequence"
+lheadM E = error "MyersStack.lheadM: empty sequence"
 lheadM (C _ x _ _) = return x
 
 ltail E = error "MyersStack.ltail: empty sequence"
 ltail (C _ _ xs _) = xs
 
-ltailM E = fail "MyersStack.ltailM: empty sequence"
+ltailM E = error "MyersStack.ltailM: empty sequence"
 ltailM (C _ _ xs _) = return xs
 
-rview E = fail "MyersStack.rview: empty sequence"
+rview E = error "MyersStack.rview: empty sequence"
 rview xs = return (rhead xs, rtail xs)
 
 rhead E = error "MyersStack.rhead: empty sequence"
@@ -175,7 +175,7 @@ rhead (C _ x xs xs') = rh x xs xs'
         rh _ (C _ y ys ys') E = rh y ys ys'
         rh x E E = x
 
-rheadM E = fail "MyersStack.rheadM: empty sequence"
+rheadM E = error "MyersStack.rheadM: empty sequence"
 rheadM (C _ x xs xs') = return (rh x xs xs')
   where rh _ _ (C _ y ys ys') = rh y ys ys'
         rh _ (C _ y ys ys') E = rh y ys ys'
@@ -186,7 +186,7 @@ rtail (C _ x xs _) = rt x xs
   where rt _ E = E
         rt y (C _ x xs _) = lcons y (rt x xs)
 
-rtailM E = fail "MyersStack.rtailM: empty sequence"
+rtailM E = error "MyersStack.rtailM: empty sequence"
 rtailM (C _ x xs _) = return (rt x xs)
   where rt _ E = E
         rt y (C _ x xs _) = lcons y (rt x xs)
@@ -249,13 +249,13 @@ inBounds i xs = inb xs i
 lookup i xs = runIdentity (lookupM i xs)
 
 lookupM i xs = look xs i
-  where look E _ = fail "MyersStack.lookup: bad subscript"
+  where look E _ = error "MyersStack.lookup: bad subscript"
         look (C j x xs xs') i
           | i >= j   = look xs' (i - j)
           | i > 0    = look xs  (i - 1)
           | i == 0   = return x
           | otherwise = nothing
-        nothing = fail "MyersStack.lookup: not found"
+        nothing = error "MyersStack.lookup: not found"
 
 lookupWithDefault d i xs = look xs i
   where look E _ = d

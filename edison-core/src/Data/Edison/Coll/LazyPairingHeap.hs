@@ -360,7 +360,7 @@ lookupAll y h = look h S.empty
             GT -> rest
 
 minView :: (Ord a, Monad m) => Heap a -> m (a, Heap a)
-minView E = fail "LazyPairingHeap.minView: empty heap"
+minView E = error "LazyPairingHeap.minView: empty heap"
 minView (H1 x xs) = return (x,xs)
 minView (H2 x h xs) = return (x,union h xs)
 
@@ -370,7 +370,7 @@ minElem (H1 x _) = x
 minElem (H2 x _ _) = x
 
 maxView :: (Ord a, Monad m) => Heap a -> m (a, Heap a)
-maxView E = fail "LazyPairingHeap.maxView: empty heap"
+maxView E = error "LazyPairingHeap.maxView: empty heap"
 maxView xs = return (y,xs')
   where (xs', y) = maxView' xs
 

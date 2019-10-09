@@ -166,7 +166,7 @@ copy n x = if n <= 0 then E else buildTrees (1::Int) (L x)
         child (T _ _ t) = t
         child _ = error "RandList.copy: bug!"
 
-lview E = fail "RandList.lview: empty sequence"
+lview E = error "RandList.lview: empty sequence"
 lview (C _ (L x) xs) = return (x, xs)
 lview (C i (T x s t) xs) = return (x, C j s (C j t xs))
   where j = half i
@@ -175,7 +175,7 @@ lhead E = error "RandList.lhead: empty sequence"
 lhead (C _ (L x) _) = x
 lhead (C _ (T x _ _) _) = x
 
-lheadM E = fail "RandList.lheadM: empty sequence"
+lheadM E = error "RandList.lheadM: empty sequence"
 lheadM (C _ (L x) _) = return x
 lheadM (C _ (T x _ _) _) = return x
 
@@ -184,7 +184,7 @@ ltail (C _ (L _) xs) = xs
 ltail (C i (T _ s t) xs) = C j s (C j t xs)
   where j = half i
 
-ltailM E = fail "RandList.ltailM: empty sequence"
+ltailM E = error "RandList.ltailM: empty sequence"
 ltailM (C _ (L _) xs) = return xs
 ltailM (C i (T _ s t) xs) = return (C j s (C j t xs))
   where j = half i
@@ -195,7 +195,7 @@ rhead (C _ t E) = treeLast t
         treeLast (T _ _ t) = treeLast t
 rhead (C _ _ xs) = rhead xs
 
-rheadM E = fail "RandList.rhead: empty sequence"
+rheadM E = error "RandList.rhead: empty sequence"
 rheadM (C _ t E) = return(treeLast t)
   where treeLast (L x) = x
         treeLast (T _ _ t) = treeLast t
@@ -272,7 +272,7 @@ inBounds i xs = inb xs i
 lookup i xs = runIdentity (lookupM i xs)
 
 lookupM i xs = look xs i
-  where look E _ = fail "RandList.lookup bad subscript"
+  where look E _ = error "RandList.lookup bad subscript"
         look (C j t xs) i
             | i < j     = lookTree j t i
             | otherwise = look xs (i - j)
@@ -285,7 +285,7 @@ lookupM i xs = look xs i
             | i /= 0 = lookTree k s (i - 1)
             | otherwise = return x
           where k = half j
-        nothing = fail "RandList.lookup: not found"
+        nothing = error "RandList.lookup: not found"
 
 lookupWithDefault d i xs = look xs i
   where look E _ = d

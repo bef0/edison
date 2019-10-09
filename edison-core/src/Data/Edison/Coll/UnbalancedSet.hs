@@ -179,7 +179,7 @@ member x (T a y b) =
     EQ -> True
     GT -> member x b
 
-lookupM _ E = fail "UnbalancedSet.lookupM: XXX"
+lookupM _ E = error "UnbalancedSet.lookupM: XXX"
 lookupM x (T a y b) =
   case compare x y of
     LT -> lookupM x a
@@ -276,7 +276,7 @@ partitionLT_GT y (T a x b) =
     GT -> (a0,T a1 x b)
           where (a0,a1) = partitionLT_GT y a
 
-minView E = fail "UnbalancedSet.minView: empty collection"
+minView E = error "UnbalancedSet.minView: empty collection"
 minView (T E x b) = return (x, b)
 minView (T a x b) = return (y, T a' x b)
   where Just (y,a') = minView a
@@ -285,7 +285,7 @@ minElem E = error "UnbalancedSet.minElem: empty collection"
 minElem (T E x _) = x
 minElem (T a _ _) = minElem a
 
-maxView E = fail "UnbalancedSet.maxView: empty collection"
+maxView E = error "UnbalancedSet.maxView: empty collection"
 maxView (T a x E) = return (x, a)
 maxView (T a x b) = return (y, T a x b')
   where Just (y, b') = maxView b

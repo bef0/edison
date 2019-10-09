@@ -414,7 +414,7 @@ class CollX c a => Coll c a | c -> a where
   lookup     :: a -> c -> a
 
   -- | Lookup one element equal to the given element.  If no elements
-  --   exist in the collection equal to the given element, 'fail' is called.
+  --   exist in the collection equal to the given element, 'error' is called.
   --   If multiple copies of the given element exist in the collection, it
   --   is unspecified which is returned.
   --
@@ -500,7 +500,7 @@ class (Coll c a, OrdCollX c a) => OrdColl c a | c -> a where
   --   the collection without that element.  If there are multiple
   --   copies of the minimum element, it is unspecified which is chosen.
   --   /Note/ that 'minView', 'minElem', and 'deleteMin' may make different
-  --   choices.  Calls 'fail' if the collection is empty.
+  --   choices.  Calls 'error' if the collection is empty.
   --
   --   This function is /ambiguous/ at bag types, if more than one minimum
   --   element exists in the bag.  Otherwise, it is /unambiguous/.
@@ -519,7 +519,7 @@ class (Coll c a, OrdCollX c a) => OrdColl c a | c -> a where
   --   the collection without that element.  If there are multiple
   --   copies of the maximum element, it is unspecified which is chosen.
   --   /Note/ that 'maxView', 'maxElem' and 'deleteMax' may make different
-  --   choices.  Calls 'fail' if the collection is empty.
+  --   choices.  Calls 'error' if the collection is empty.
   --
   --   This function is /ambiguous/ at bag types, if more than one maximum
   --   element exists in the bag.  Otherwise, it is /unambiguous/.

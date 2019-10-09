@@ -179,12 +179,12 @@ partitionLE_GT x   = DS.partition (<=x)
 partitionLT_GT     = DS.split
 
 minView set        = if DS.null set
-                        then fail (moduleName ++ ".minView: failed")
+                        then error (moduleName ++ ".minView: errored")
                         else return (DS.deleteFindMin set)
 minElem            = DS.findMin
 
 maxView set        = if DS.null set
-                        then fail (moduleName ++ ".maxView: failed")
+                        then error (moduleName ++ ".maxView: errored")
                         else return (DS.deleteFindMax set)
 maxElem            = DS.findMax
 

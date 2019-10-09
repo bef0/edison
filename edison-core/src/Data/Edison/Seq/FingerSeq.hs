@@ -243,7 +243,7 @@ lookupM i (Seq xs)
         case FT.splitTree (> (SizeM i)) (SizeM 0) xs of
            FT.Split _ (Elem x) _ -> return x
 
-    | otherwise = fail "FingerSeq.lookupM: index out of bounds"
+    | otherwise = error "FingerSeq.lookupM: index out of bounds"
 
 lookupWithDefault d i (Seq xs)
     | inBounds i (Seq xs) =

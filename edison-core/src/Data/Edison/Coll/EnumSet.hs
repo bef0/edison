@@ -254,7 +254,7 @@ lookup = lookupUsingLookupAll
 lookupM :: (Eq a, Enum a, Monad m) => a -> Set a -> m a
 lookupM x s
    | member x s = return x
-   | otherwise  = fail (moduleName++".lookupM: lookup failed")
+   | otherwise  = error (moduleName++".lookupM: lookup errored")
 
 lookupAll  :: (Eq a, Enum a, S.Sequence s) => a -> Set a -> s a
 lookupAll = lookupAllUsingLookupM
@@ -342,12 +342,12 @@ deleteMax (Set w)
 
 minView :: (Enum a, Monad m) => Set a -> m (a, Set a)
 minView (Set w)
-   | w == 0    = fail (moduleName++".minView: empty set")
+   | w == 0    = error (moduleName++".minView: empty set")
    | otherwise = let i = lsb w in return (toEnum i,Set $ clearBit w i)
 
 maxView :: (Enum a, Monad m) => Set a -> m (a, Set a)
 maxView (Set w)
-   | w == 0    = fail (moduleName++".maxView: empty set")
+   | w == 0    = error (moduleName++".maxView: empty set")
    | otherwise = let i = msb w in return (toEnum i, Set $ clearBit w i)
 
 unsafeInsertMin :: (Ord a, Enum a) => a -> Set a -> Set a
